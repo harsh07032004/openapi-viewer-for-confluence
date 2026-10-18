@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moving off a Connect-based Swagger or OpenAPI macro</title><meta name="description" content="Paste or upload an OpenAPI or Swagger file and get readable, searchable API docs on any Confluence page. Runs on Atlassian, with no external data transfer.">
+<link rel="stylesheet" href="style.css"><link rel="icon" href="logo.png"></head>
+<body><header><img src="logo.png" alt=""><a class="brand" href="index.html">OpenAPI &amp; Swagger Viewer for Confluence</a>
+<nav><a href="index.html">Docs</a><a href="migrate.html">Migrate</a><a href="https://github.com/harsh07032004/openapi-viewer-for-confluence/issues">Support</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></nav></header>
+<main>
+<h1>Moving off a Connect-based Swagger or OpenAPI macro</h1>
+<p>Atlassian Connect reaches end of support at the end of 2026, and Connect apps could no longer ship normal updates after 31 March 2026. If your Swagger or OpenAPI macro is a Connect app, it will stop receiving security fixes.</p>
+<h2>1. Check whether your current macro is a Connect app</h2>
+<p>As a Confluence admin, open <b>Settings → Apps → Manage apps</b>, find the macro's app and open its Marketplace listing. Apps with the <i>Runs on Atlassian</i> badge are Forge apps.</p>
+<h2>2. Move each page (about two minutes)</h2>
+<ol>
+  <li>Install OpenAPI &amp; Swagger Viewer for Confluence from the Atlassian Marketplace.</li>
+  <li>Open a page that uses the old macro and click <b>Edit</b>.</li>
+  <li>Copy the spec text from the old macro's settings, or get the spec file from your repository.</li>
+  <li>Type <code>/OpenAPI Viewer</code>, paste or upload the spec, click <b>Save</b>.</li>
+  <li>Delete the old macro and publish.</li>
+</ol>
+<p>To find every page that uses the old macro, search Confluence with CQL: <code>macro = "old-macro-key"</code>. The key appears in the page's storage format.</p>
+<h2>Differences to expect</h2>
+<ul>
+  <li>Try it out is off, so no requests leave Confluence.</li>
+  <li>Specs are pasted or uploaded instead of fetched from a URL. Git sync is on the roadmap; tell us if you need it at <a href="https://github.com/harsh07032004/openapi-viewer-for-confluence/issues">https://github.com/harsh07032004/openapi-viewer-for-confluence/issues</a>.</li>
+</ul>
+</main>
+<footer>OpenAPI &amp; Swagger Viewer for Confluence by Specwise Labs. Not affiliated with Atlassian or SmartBear. Swagger is a trademark of SmartBear Software.</footer>
+</body></html>
