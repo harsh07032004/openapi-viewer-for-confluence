@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CQL Report for Confluence: documentation</title><meta name="description" content="Run a CQL query on any page and show matching pages, blog posts and attachments as a sortable table with labels, dates and excerpts. Export to CSV. Runs on Atlassian.">
+<link rel="stylesheet" href="../style.css"><link rel="icon" href="logo.png"></head>
+<body><header><img src="logo.png" alt=""><a class="brand" href="index.html">CQL Report for Confluence</a>
+<nav><a href="index.html">Docs</a><a href="support.html">Support</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></nav></header>
+<main>
+<h1>CQL Report for Confluence</h1><p class="muted">Turn any Confluence query (CQL) into a live, sortable table with CSV export. Runs on Atlassian.</p>
+<img class="shot" src="report.png" alt="A CQL report table on a Confluence page">
+<h2>Add a report to a page</h2>
+<ol><li>Edit a page, type <code>/CQL Report</code> and press Enter.</li>
+<li>Enter a CQL query and click <b>Test query</b> to check how many results it returns.</li>
+<li>Choose columns, sort order and maximum rows, then <b>Save</b> and publish.</li></ol>
+<img class="shot" src="editor.png" alt="The CQL Report editor">
+<h2>Placeholders</h2>
+<table><tr><th>Placeholder</th><th>Replaced with</th></tr>
+<tr><td><code>{currentSpace}</code></td><td>The key of the space the page is in</td></tr>
+<tr><td><code>{currentPage}</code></td><td>The ID of the page the macro is on</td></tr>
+<tr><td><code>{currentUser}</code></td><td>The person viewing the page</td></tr></table>
+<h2>Useful queries</h2>
+<table><tr><th>Report</th><th>CQL</th></tr>
+<tr><td>Stale pages in this space</td><td><code>type = page AND space = {currentSpace} AND lastmodified &lt; now("-180d")</code></td></tr>
+<tr><td>Pages with a label</td><td><code>type = page AND label = "howto"</code></td></tr>
+<tr><td>All child pages</td><td><code>ancestor = {currentPage}</code></td></tr>
+<tr><td>My recent work</td><td><code>contributor = {currentUser} AND lastmodified &gt; now("-30d")</code></td></tr>
+<tr><td>Attachments in this space</td><td><code>type = attachment AND space = {currentSpace}</code></td></tr></table>
+<p>See Atlassian's <a href="https://developer.atlassian.com/cloud/confluence/advanced-searching-using-cql/">CQL reference</a> for every field and operator.</p>
+<h2>Permissions and privacy</h2>
+<p>Each search runs as the person viewing the page, so people only see results they already have access to. The app stores nothing and makes no external calls; it is eligible for <i>Runs on Atlassian</i>.</p>
+<h2>Limits</h2><ul><li>Up to 1,000 rows per report (loaded 50 at a time).</li><li>CSV export contains the rows currently loaded, in the current sort order.</li></ul>
+<h2>Release notes</h2><p><b>1.0.0</b>: First release: CQL query reports with sorting, placeholders and CSV export.</p></main><footer>CQL Report for Confluence by TitanLabs. Not affiliated with Atlassian.</footer></body></html>
