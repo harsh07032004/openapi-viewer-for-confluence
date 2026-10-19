@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Security: OpenAPI &amp; Swagger Viewer for Confluence</title><meta name="description" content="Paste or upload an OpenAPI or Swagger file and get readable, searchable API docs on any Confluence page. Runs on Atlassian, with no external data transfer.">
+<link rel="stylesheet" href="style.css"><link rel="icon" href="logo.png"></head>
+<body><header><img src="logo.png" alt=""><a class="brand" href="index.html">OpenAPI &amp; Swagger Viewer for Confluence</a>
+<nav><a href="index.html">Docs</a><a href="migrate.html">Migrate</a><a href="support.html">Support</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></nav></header>
+<main>
+<h1>Security</h1>
+<h2>Architecture</h2>
+<ul>
+  <li>Built only on Atlassian Forge and eligible for <i>Runs on Atlassian</i>. Code runs on Atlassian infrastructure; specs are stored in Forge storage for your site.</li>
+  <li>No external network access is declared, so the app cannot send data off Atlassian. No remote REST APIs, no third-party sub-processors.</li>
+  <li>All Confluence API calls run as the current user, so page restrictions are enforced by Confluence on every read and save.</li>
+  <li>No personal data, passwords, API tokens or other secrets are collected or stored.</li>
+</ul>
+<h2>Development practices</h2>
+<ul>
+  <li>Automated tests run on every change; dependencies are monitored and updated automatically.</li>
+  <li>Vulnerabilities are fixed within Atlassian's Marketplace security bug-fix timeframes (critical 10 days, high 4 weeks, medium 12 weeks, low 25 weeks).</li>
+</ul>
+<h2>Reporting a vulnerability</h2>
+<p>Report privately through Atlassian's Marketplace security process, or open a minimal issue at <a href="https://github.com/harsh07032004/openapi-viewer-for-confluence/issues">https://github.com/harsh07032004/openapi-viewer-for-confluence/issues</a> asking for a private contact. Do not post exploit details publicly.</p>
+</main>
+<footer>OpenAPI &amp; Swagger Viewer for Confluence by TitanLabs. Not affiliated with Atlassian or SmartBear. Swagger is a trademark of SmartBear Software.</footer>
+</body></html>
