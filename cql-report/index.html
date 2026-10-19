@@ -3,7 +3,7 @@
 <title>CQL Report for Confluence: documentation</title><meta name="description" content="Run a CQL query on any page and show matching pages, blog posts and attachments as a sortable table with labels, dates and excerpts. Export to CSV. Runs on Atlassian.">
 <link rel="stylesheet" href="../style.css"><link rel="icon" href="logo.png"></head>
 <body><header><img src="logo.png" alt=""><a class="brand" href="index.html">CQL Report for Confluence</a>
-<nav><a href="index.html">Docs</a><a href="support.html">Support</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></nav></header>
+<nav><a href="builder.html">CQL builder</a><a href="index.html">Docs</a><a href="support.html">Support</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></nav></header>
 <main>
 <h1>CQL Report for Confluence</h1><p class="muted">Turn any Confluence query (CQL) into a live, sortable table with CSV export. Runs on Atlassian.</p>
 <img class="shot" src="report.png" alt="A CQL report table on a Confluence page">
@@ -17,6 +17,7 @@
 <tr><td><code>{currentSpace}</code></td><td>The key of the space the page is in</td></tr>
 <tr><td><code>{currentPage}</code></td><td>The ID of the page the macro is on</td></tr>
 <tr><td><code>{currentUser}</code></td><td>The person viewing the page</td></tr></table>
+<p>Need a query? Try the free <a href="builder.html">CQL query builder</a> with copy-ready recipes.</p>
 <h2>Useful queries</h2>
 <table><tr><th>Report</th><th>CQL</th></tr>
 <tr><td>Stale pages in this space</td><td><code>type = page AND space = {currentSpace} AND lastmodified &lt; now("-180d")</code></td></tr>

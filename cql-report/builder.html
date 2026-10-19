@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Confluence CQL Query Builder and Examples (free)</title>
+<meta name="description" content="Build Confluence CQL queries without memorising the syntax. Free builder plus copy-ready recipes for stale pages, labels, child pages, recent changes and more. Runs in your browser.">
+<link rel="canonical" href="https://harsh07032004.github.io/openapi-viewer-for-confluence/cql-report/builder.html">
+<link rel="stylesheet" href="../style.css"><link rel="icon" href="logo.png">
+<style>
+  form.b { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px 16px; margin: 16px 0; }
+  form.b label { display: flex; flex-direction: column; font-size: 14px; color: var(--muted); gap: 4px; }
+  form.b input, form.b select { font: inherit; padding: 6px 8px; border: 1px solid var(--line); border-radius: 4px; background: var(--bg); color: var(--fg); }
+  .out { position: relative; }
+  .out pre { white-space: pre-wrap; word-break: break-word; min-height: 48px; padding-right: 90px; }
+  button { font: inherit; padding: 6px 14px; border: 0; border-radius: 4px; background: var(--link); color: #fff; cursor: pointer; }
+  .out button { position: absolute; top: 8px; right: 8px; }
+  .recipes button { background: transparent; color: var(--link); border: 1px solid var(--line); padding: 2px 10px; font-size: 14px; }
+  .cta { margin: 28px 0; padding: 16px; border: 1px solid var(--line); border-radius: 6px; }
+  .warn { color: #AE2E24; font-size: 14px; min-height: 1em; }
+</style></head>
+<body><header><img src="logo.png" alt=""><a class="brand" href="index.html">CQL Report for Confluence</a>
+<nav><a href="builder.html">CQL builder</a><a href="index.html">Docs</a><a href="support.html">Support</a></nav></header>
+<main>
+<h1>Confluence CQL query builder</h1>
+<p class="muted">Pick what you want to find and copy the CQL. Paste it into Confluence advanced search, the REST API, or a report macro. Everything runs in your browser and nothing is sent anywhere.</p>
+
+<form class="b" id="f" onsubmit="return false">
+  <label>Content type
+    <select id="type"><option value="page">Pages</option><option value="blogpost">Blog posts</option><option value="attachment">Attachments</option><option value="comment">Comments</option><option value="">Any</option></select></label>
+  <label>Space keys (comma separated)<input id="space" placeholder="ENG, OPS or {currentSpace}"></label>
+  <label>Has any of these labels<input id="labels" placeholder="howto, runbook"></label>
+  <label>Missing this label<input id="nolabel" placeholder="archived"></label>
+  <label>Title contains<input id="title" placeholder="release notes"></label>
+  <label>Text contains<input id="text" placeholder="deprecated"></label>
+  <label>Last updated
+    <select id="mod"><option value="">Any time</option><option value="&gt;-7d">In the last 7 days</option><option value="&gt;-30d">In the last 30 days</option><option value="&lt;-90d">Not in 90 days</option><option value="&lt;-180d">Not in 180 days</option><option value="&lt;-365d">Not in a year</option></select></label>
+  <label>Created
+    <select id="cre"><option value="">Any time</option><option value="&gt;-7d">In the last 7 days</option><option value="&gt;-30d">In the last 30 days</option><option value="&gt;-365d">In the last year</option></select></label>
+  <label>Under page (ancestor ID)<input id="anc" placeholder="123456 or {currentPage}"></label>
+  <label>Created by
+    <select id="by"><option value="">Anyone</option><option value="currentUser()">Me</option></select></label>
+  <label>Sort by
+    <select id="order"><option value="lastmodified DESC">Recently updated first</option><option value="lastmodified ASC">Oldest update first</option><option value="created DESC">Newest first</option><option value="title ASC">Title A–Z</option><option value="">Relevance</option></select></label>
+</form>
+
+<div class="out"><pre id="cql" aria-live="polite"></pre><button type="button" id="copy">Copy</button></div>
+<p class="warn" id="warn"></p>
+
+<h2>Ready-made CQL recipes</h2>
+<table class="recipes"><thead><tr><th>Find</th><th>CQL</th><th></th></tr></thead><tbody id="recipes"></tbody></table>
+
+<div class="cta">
+  <h2 style="margin-top:0">Turn a query into a live report on a page</h2>
+  <p><b>CQL Report for Confluence</b> runs any of these queries right on a page. It shows a sortable table, a bar or pie chart (by space, type, label or month), and CSV export. Results always respect page permissions because the search runs as the viewer, and the app <i>Runs on Atlassian</i>: no data leaves your site.</p>
+  <p><a href="index.html">See how it works →</a></p>
+</div>
+
+<h2>CQL cheat sheet</h2>
+<table>
+<tr><th>Operator</th><th>Meaning</th><th>Example</th></tr>
+<tr><td><code>=</code> / <code>!=</code></td><td>Exact match</td><td><code>space = "ENG"</code></td></tr>
+<tr><td><code>in</code> / <code>not in</code></td><td>Any of a list</td><td><code>label in ("howto","faq")</code></td></tr>
+<tr><td><code>~</code> / <code>!~</code></td><td>Contains words</td><td><code>title ~ "onboarding"</code></td></tr>
+<tr><td><code>&lt;</code> <code>&gt;</code></td><td>Before / after a date</td><td><code>lastmodified &lt; now("-180d")</code></td></tr>
+<tr><td><code>now("-30d")</code></td><td>Relative date (d, w, M, y)</td><td><code>created &gt; now("-2w")</code></td></tr>
+<tr><td><code>currentUser()</code></td><td>The person searching</td><td><code>creator = currentUser()</code></td></tr>
+<tr><td><code>ORDER BY</code></td><td>Sorting</td><td><code>ORDER BY lastmodified DESC</code></td></tr>
+</table>
+<p class="muted">Field reference: <a href="https://developer.atlassian.com/cloud/confluence/advanced-searching-using-cql/" rel="noopener">Atlassian's CQL documentation</a>.</p>
+</main>
+<footer>CQL Report for Confluence by TitanLabs. Not affiliated with Atlassian.</footer>
+<script>
+const $ = (id) => document.getElementById(id);
+const q = (s) => '"' + String(s).replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"';
+const list = (s) => s.split(',').map((x) => x.trim()).filter(Boolean);
+const val = (s) => (/^\{current(Space|Page)\}$/.test(s) ? s : q(s));
+function build() {
+  const p = [], warn = [];
+  const type = $('type').value;
+  if (type) p.push('type = ' + type);
+  const sp = list($('space').value);
+  if (sp.length === 1) p.push('space = ' + val(sp[0]));
+  else if (sp.length > 1) p.push('space in (' + sp.map(val).join(', ') + ')');
+  const lb = list($('labels').value);
+  if (lb.length === 1) p.push('label = ' + q(lb[0]));
+  else if (lb.length > 1) p.push('label in (' + lb.map(q).join(', ') + ')');
+  const nl = list($('nolabel').value);
+  if (nl.length) p.push('label not in (' + nl.map(q).join(', ') + ')');
+  if ($('title').value.trim()) p.push('title ~ ' + q($('title').value.trim()));
+  if ($('text').value.trim()) p.push('text ~ ' + q($('text').value.trim()));
+  const date = (field, v) => v && p.push(field + ' ' + v[0] + ' now("' + v.slice(1) + '")');
+  date('lastmodified', $('mod').value);
+  date('created', $('cre').value);
+  const anc = $('anc').value.trim();
+  if (anc) {
+    if (/^(\d+|\{currentPage\})$/.test(anc)) p.push('ancestor = ' + anc);
+    else warn.push('Ancestor must be a page ID (numbers only) or {currentPage}.');
+  }
+  if ($('by').value) p.push('creator = ' + $('by').value);
+  if (!p.length) warn.push('Pick at least one filter. Confluence needs a condition before ORDER BY.');
+  if (/\{current/.test(sp.join() + anc)) warn.push('{currentSpace} and {currentPage} work in CQL Report; in advanced search, use a real key or ID.');
+  let cql = p.join(' AND ');
+  if (cql && $('order').value) cql += ' ORDER BY ' + $('order').value;
+  $('cql').textContent = cql || '—';
+  $('warn').textContent = warn.join(' ');
+  return cql;
+}
+const copy = async (text, btn) => {
+  try { await navigator.clipboard.writeText(text); btn.textContent = 'Copied'; }
+  catch { btn.textContent = 'Select & copy'; }
+  setTimeout(() => (btn.textContent = btn.dataset.label), 1500);
+};
+$('copy').dataset.label = 'Copy';
+$('copy').onclick = () => { const c = build(); if (c) copy(c, $('copy')); };
+$('f').addEventListener('input', build);
+const R = [
+  ['Stale pages nobody has updated in 6 months', 'type = page AND space = "ENG" AND lastmodified < now("-180d") ORDER BY lastmodified ASC'],
+  ['How-to articles across the site', 'type = page AND label = "howto" ORDER BY title ASC'],
+  ['Pages without any of your required labels', 'type = page AND space = "ENG" AND label not in ("approved", "draft")'],
+  ['All pages under a parent page', 'type = page AND ancestor = 123456 ORDER BY title ASC'],
+  ['What changed this week', 'type in (page, blogpost) AND lastmodified > now("-7d") ORDER BY lastmodified DESC'],
+  ['My pages, newest first', 'type = page AND creator = currentUser() ORDER BY created DESC'],
+  ['Pages I contributed to recently', 'contributor = currentUser() AND lastmodified > now("-30d")'],
+  ['Pages mentioning a deprecated term', 'type = page AND text ~ "deprecated" ORDER BY lastmodified DESC'],
+  ['PDF attachments in a space', 'type = attachment AND space = "ENG" AND title ~ "pdf"'],
+  ['Blog posts from the last quarter', 'type = blogpost AND created > now("-3M") ORDER BY created DESC'],
+  ['Meeting notes', 'type = page AND label = "meeting-notes" ORDER BY created DESC'],
+  ['Release notes pages', 'type = page AND title ~ "release notes" ORDER BY created DESC'],
+];
+$('recipes').append(...R.map(([name, cql]) => {
+  const tr = document.createElement('tr');
+  const b = document.createElement('button');
+  b.type = 'button'; b.textContent = b.dataset.label = 'Copy';
+  b.onclick = () => copy(cql, b);
+  const code = document.createElement('code'); code.textContent = cql;
+  [name, code, b].forEach((x) => { const td = document.createElement('td'); td.append(x); tr.append(td); });
+  return tr;
+}));
+build();
+</script>
+</body></html>
